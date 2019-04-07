@@ -4,8 +4,11 @@
 }
 
 html {
+    position: relative;
+
     width: 100%;
     height: 100vh;
+    min-height: 56.25vw;
 
     font-family: "Fira Sans", sans-serif;
 
@@ -13,11 +16,30 @@ html {
     color: #ebdbb2;
 }
 
+pre,
+code {
+    width: 100%;
+    height: 100%;
+
+    font-family: "Fira Code", monospace;
+    font-feature-settings: "calt" 1;
+    font-variant-ligatures: contextual;
+
+    overflow: auto;
+}
+
 body {
-    padding: 0;
-    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto 0;
+
     width: 100%;
     height: 56.25vw;
+
     background-color: #282828;
 }
 
@@ -26,5 +48,11 @@ body {
     top: 0;
     right: 0;
     width: 56.25vw;
-    height: 56.25vw;
+    height: 100%;
+}
+
+#info {
+    width: auto;
+    height: 100%;
+    margin-right: 56.25vw;
 }

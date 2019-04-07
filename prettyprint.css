@@ -22,10 +22,8 @@ pre > code:before {
 }*/
 
 html pre.prettyprint {
-    font-family: "Fira Code", monospace;
-    font-feature-settings: "calt" 1;
-    font-variant-ligatures: contextual;
-
+    margin: 0;
+    padding: 0;
     border: 0;
 }
 
