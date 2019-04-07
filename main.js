@@ -41,19 +41,11 @@ const createArena = (team1, team2) => {
 const arena = createArena(team1, team2);
 const simulation = simulate(arena);
 
-const canvas = document.body.appendChild(document.createElement("canvas"));
-canvas.width = 500;
-canvas.height = 500;
-canvas.style.cssText = `
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 500px; 
-    height: 500px;
-    margin: -250px;
-`;
+const canvas = document.getElementById("viewport");
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
 
-const renderer = createRenderer(canvas, 0.01);
+const renderer = createRenderer(canvas, canvas.width / 50000);
 
 const run = () => {
     simulation.next();
@@ -64,7 +56,7 @@ const run = () => {
         renderer.drawBot(bot);
     }
 
-    setTimeout(run, 25);
+    requestAnimationFrame(run);
 };
 
 run();

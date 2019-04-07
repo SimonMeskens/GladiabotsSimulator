@@ -1,0 +1,105 @@
+/*pre {
+    font-family: "Fira Code", monospace;
+    font-feature-settings: "calt" 1;
+    font-variant-ligatures: contextual;
+    white-space: nowrap;
+    counter-reset: line;
+}
+pre > code {
+    display: block;
+    white-space: pre;
+    font-family: inherit;
+    counter-increment: line;
+}
+pre > code:before {
+    content: counter(line);
+    display: inline-block;
+    width: 3ch;
+    text-align: right;
+    margin-right: 1ch;
+    color: #928374;
+    -webkit-user-select: none;
+}*/
+
+html pre.prettyprint {
+    font-family: "Fira Code", monospace;
+    font-feature-settings: "calt" 1;
+    font-variant-ligatures: contextual;
+
+    border: 0;
+}
+
+pre.prettyprint ol.linenums {
+    margin-top: 0;
+    margin-bottom: 0;
+    counter-reset: line;
+}
+
+pre.prettyprint ol.linenums > li {
+    list-style-type: none;
+    background-color: transparent;
+    counter-increment: line;
+}
+
+pre.prettyprint ol.linenums > li::before {
+    content: counter(line);
+    display: inline-block;
+    width: 3ch;
+    text-align: right;
+    margin-right: 1ch;
+    color: #928374;
+    -webkit-user-select: none;
+}
+
+pre.prettyprint .str {
+    /* string content */
+    color: #b8bb26;
+}
+pre.prettyprint .kwd {
+    /* a keyword */
+    color: #fb4934;
+}
+pre.prettyprint .com {
+    /* a comment */
+    color: #928374;
+}
+pre.prettyprint .typ {
+    /* a type name */
+    color: #f0f;
+}
+pre.prettyprint .lit {
+    /* a literal value */
+    color: #d3869b;
+}
+pre.prettyprint .pun,
+pre.prettyprint .opn,
+pre.prettyprint .clo {
+    /* punctuation, lisp open bracket, lisp close bracket */
+    color: #ebdbb2;
+}
+pre.prettyprint .tag {
+    /* a markup tag name */
+    color: #83a598;
+}
+pre.prettyprint .atn {
+    /* a markup attribute name */
+    color: #b8bb26;
+}
+pre.prettyprint .atv {
+    /* a markup attribute value */
+    color: #d3869b;
+}
+pre.prettyprint .dec,
+pre.prettyprint .var {
+    /* a declaration; a variable name */
+    color: #fabd2f;
+}
+pre.prettyprint .fun {
+    /* a function name */
+    color: #b8bb26;
+}
+
+pre.prettyprint .pln {
+    /* unknown */
+    color: #8ec07c;
+}

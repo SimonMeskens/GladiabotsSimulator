@@ -5,17 +5,34 @@
 
         <title>Gladiabots calculator</title>
 
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:400,700|Fira+Sans:400,700"
+            rel="stylesheet"
+        />
+
+        <link href="style.css" rel="stylesheet" />
+        <link href="prettyprint.css" rel="stylesheet" />
+
+        <script
+            src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"
+            defer
+        ></script>
+
         <script type="module" src="main.js"></script>
-        <style>
-            body,
-            html {
-                padding: 0;
-                margin: 0;
-                width: 100vw;
-                height: 100vh;
-                background-color: #222;
-            }
-        </style>
     </head>
-    <body></body>
+    <body>
+        <section id="info">
+            <pre class="prettyprint linenums">
+const hello = () => {
+    let a = 4;
+    console.log("hello world");
+}
+            </pre>
+        </section>
+        <canvas id="viewport"></canvas>
+    </body>
 </html>
