@@ -1,6 +1,8 @@
 import { createBot, simulate } from "./simulate.js";
 import { createRenderer } from "./render.js";
 
+import { Prism } from "./prism.js";
+
 const team1 = [
     createBot("shotgun", (myself, arena) => {
         return {
@@ -60,3 +62,31 @@ const run = () => {
 };
 
 run();
+
+const debounce = (wait, callback) => {
+    let timeout = null;
+    return (...args) => {
+        const next = () => callback(...args);
+        clearTimeout(timeout);
+        timeout = setTimeout(next, wait);
+    };
+};
+
+const code = document.getElementById("info").querySelector("pre code[class*=language-]");
+
+code.textContent = `const hello = () => {
+    let a = 4;
+    // comment
+    console.log("hello world");
+}
+`;
+
+code.innerHTML =
+    "<ol>" +
+    Prism.highlight(code.textContent, Prism.languages.javascript, "javascript")
+        .split("\n")
+        .map(line => `<li class="line">${line}</span>`)
+        .join("\n") +
+    "</ol>";
+
+code.parentElement.classList.add("formatted");
