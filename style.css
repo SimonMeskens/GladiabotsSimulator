@@ -56,3 +56,43 @@ body {
     height: 100%;
     margin-right: 56.25vw;
 }
+
+#info .bot-info {
+    margin: 1em;
+}
+
+.bot-info h2 {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.bot-info h2.team0 {
+    color: #fb4934;
+}
+
+.bot-info h2.team1 {
+    color: #83a598;
+}
+
+.bot-info dl {
+    position: relative;
+    overflow: auto;
+    margin-top: 0.3em;
+}
+
+.bot-info dt {
+    float: left;
+    clear: left;
+    width: 5em;
+    text-transform: uppercase;
+    font-variant: small-caps;
+    color: #d79921;
+}
+
+.bot-info dd {
+    float: left;
+    clear: right;
+    width: 3em;
+    text-align: right;
+    color: #b8bb26;
+}

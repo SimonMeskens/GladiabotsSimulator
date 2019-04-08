@@ -34,7 +34,7 @@ const theme = {
 
 const drawBot = (bot, graphics, scale) => {
     const fg = color(bot.team === 0 ? theme.red[0] : theme.blue[0]);
-    const bg = color(bot.team === 0 ? theme.red[1] : theme.blue[1]);
+
     const x = bot.x * scale;
     const y = bot.y * scale;
 
@@ -44,6 +44,27 @@ const drawBot = (bot, graphics, scale) => {
     graphics.beginPath();
     graphics.arc(x, y, bot.size * scale, 0, Math.PI * 2);
     graphics.fill();
+};
+
+const drawBotInfo = (bot, graphics, scale) => {
+    const bg = color(bot.team === 0 ? theme.red[1] : theme.blue[1]);
+
+    const x = bot.x * scale;
+    const y = bot.y * scale;
+
+    graphics.lineWidth = 2;
+
+    if (bot.action.type === "attack") {
+        const target = bot.action.target;
+
+        graphics.strokeStyle = color(theme.purple[0])(0.5);
+        graphics.beginPath();
+        graphics.setLineDash([15, 5]);
+        graphics.moveTo(x, y);
+        graphics.lineTo(target.x * scale, target.y * scale);
+        graphics.stroke();
+        graphics.setLineDash([]);
+    }
 
     graphics.strokeStyle = bg(0.5);
     graphics.beginPath();
@@ -71,6 +92,7 @@ export const createRenderer = (canvas, scale) => {
             graphics.fillStyle = color(theme.bg[3])(1);
             graphics.fillRect(0, 0, canvas.width, canvas.height);
         },
-        drawBot: bot => drawBot(bot, graphics, scale)
+        drawBot: bot => drawBot(bot, graphics, scale),
+        drawBotInfo: bot => drawBotInfo(bot, graphics, scale)
     };
 };
