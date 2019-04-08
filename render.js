@@ -38,8 +38,6 @@ const drawBot = (bot, graphics, scale) => {
     const x = bot.x * scale;
     const y = bot.y * scale;
 
-    graphics.lineWidth = 2;
-
     graphics.fillStyle = fg(1);
     graphics.beginPath();
     graphics.arc(x, y, bot.size * scale, 0, Math.PI * 2);
@@ -82,6 +80,18 @@ const drawBotInfo = (bot, graphics, scale) => {
     graphics.stroke();
 };
 
+const drawBullet = (bullet, graphics, scale) => {
+    const fg = color(theme.yellow[2]);
+
+    const x = bullet.x * scale;
+    const y = bullet.y * scale;
+
+    graphics.fillStyle = fg(0.7);
+    graphics.beginPath();
+    graphics.arc(x, y, 500 * scale, 0, Math.PI * 2);
+    graphics.fill();
+};
+
 export const createRenderer = (canvas, scale) => {
     const graphics = canvas.getContext("2d", {
         alpha: false
@@ -93,6 +103,7 @@ export const createRenderer = (canvas, scale) => {
             graphics.fillRect(0, 0, canvas.width, canvas.height);
         },
         drawBot: bot => drawBot(bot, graphics, scale),
-        drawBotInfo: bot => drawBotInfo(bot, graphics, scale)
+        drawBotInfo: bot => drawBotInfo(bot, graphics, scale),
+        drawBullet: bullet => drawBullet(bullet, graphics, scale)
     };
 };

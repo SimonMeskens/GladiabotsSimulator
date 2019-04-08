@@ -92,6 +92,10 @@ const run = () => {
         renderer.drawBotInfo(bot);
     }
 
+    for (let bullet of arena.bullets) {
+        renderer.drawBullet(bullet);
+    }
+
     for (let bot of arena.bots) {
         renderer.drawBot(bot);
     }
