@@ -1,51 +1,133 @@
 import { createBot, simulate } from "./simulate.js";
 import { createRenderer } from "./render.js";
 
-const team1 = [
-    createBot("shotgun", (self, arena) => {
-        const target = arena.teams[1][0];
-        const x = target.x - self.x;
-        const y = target.y - self.y;
+const tainy = (self, arena) => {
+    const distances = new Map();
+    const allyTargets = [];
+
+    for (let bot of arena.bots) {
+        if (bot === self) continue;
+
+        const x = bot.x - self.x;
+        const y = bot.y - self.y;
         const distance = Math.sqrt(x * x + y * y);
 
+        distances.set(bot, distance);
+
+        if (bot.team === self.team) {
+            if (bot.action.type === "attack") allyTargets.push(bot.action.target);
+        }
+    }
+
+    if (self.shield < self.proto.shield / 2) {
+        const fleeTargets = arena.teams[1 - self.team].filter(
+            enemy =>
+                enemy.action.type === "attack" &&
+                enemy.action.target === self &&
+                distances.get(enemy) <= 15000 &&
+                enemy.health + enemy.shield >= self.health + self.shield
+        );
+
+        let [x, y] = fleeTargets.reduce(
+            (acc, enemy) => [acc[0] + enemy.x, acc[1] + enemy.y],
+            [0, 0]
+        );
+
+        x /= fleeTargets.length;
+        y /= fleeTargets.length;
+
+        if (fleeTargets.length > 0)
+            return {
+                type: "flee",
+                target: { x, y }
+            };
+    }
+
+    if (self.action.type === "attack" && distances.get(self.action.target) <= 15000) {
+        return self.action;
+    }
+
+    const mediumTargets = arena.teams[1 - self.team]
+        .filter(enemy => distances.get(enemy) <= 8000)
+        .sort((a, b) => a.health < b.health);
+
+    if (mediumTargets.length > 0)
         return {
-            type: distance < 3000 || self.shield < 3000 ? "flee" : "move",
-            target
+            type: "attack",
+            target: mediumTargets[0]
         };
-    })
+
+    const nearest = arena.teams[1 - self.team]
+        .slice(0)
+        .sort((a, b) => distances.get(a) < distances.get(b));
+
+    return {
+        type: "move",
+        target: nearest[0]
+    };
+};
+
+const team1 = [
+    createBot("sniper", tainy),
+    createBot("machine", tainy),
+    createBot("assault", tainy),
+    createBot("assault", tainy)
 ];
 const team2 = [
-    createBot("machine", (self, arena) => {
-        const target = arena.teams[0][0];
-        const x = target.x - self.x;
-        const y = target.y - self.y;
-        const distance = Math.sqrt(x * x + y * y);
-
-        return {
-            type: distance < 15000 ? "attack" : "move",
-            target
-        };
-    })
+    createBot("assault", tainy),
+    createBot("assault", tainy),
+    createBot("assault", tainy),
+    createBot("assault", tainy)
 ];
 
 const createArena = (team1, team2) => {
     Object.assign(team1[0], {
-        x: 20000,
+        x: 22000,
         y: 1500,
-        team: 1
+        team: 0
+    });
+    Object.assign(team1[1], {
+        x: 24000,
+        y: 1500,
+        team: 0
+    });
+    Object.assign(team1[2], {
+        x: 26000,
+        y: 1500,
+        team: 0
+    });
+    Object.assign(team1[3], {
+        x: 28000,
+        y: 1500,
+        team: 0
     });
 
     Object.assign(team2[0], {
-        x: 30000,
+        x: 22000,
         y: 48500,
-        team: 0
+        team: 1
+    });
+    Object.assign(team2[1], {
+        x: 24000,
+        y: 48500,
+        team: 1
+    });
+    Object.assign(team2[2], {
+        x: 26000,
+        y: 48500,
+        team: 1
+    });
+    Object.assign(team2[3], {
+        x: 28000,
+        y: 48500,
+        team: 1
     });
 
     return {
         bots: [...team1, ...team2],
-        entities: [...team1, ...team2],
         teams: [team1, team2],
-        bullets: []
+        bullets: [],
+        size: 50000
     };
 };
 
@@ -73,6 +155,7 @@ const updateInfo = arena => {
                     <dt>Shield</dt><dd>${Math.floor(
                         (bot.shield / bot.proto.shield) * 100
                     )}%</dd>
+                    <dt>Action</dt><dd>${bot.action.type}</dd>
                 </dl>
             </div>
         `;

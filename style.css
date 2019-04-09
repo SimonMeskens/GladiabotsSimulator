@@ -59,6 +59,7 @@ body {
 
 #info .bot-info {
     margin: 1em;
+    float: left;
 }
 
 .bot-info h2 {

@@ -63,6 +63,7 @@ const turn = arena => {
             let speed = bot.movementSpeed;
             if (
                 bot.action.type === "move" &&
+                bot.action.target.size &&
                 distance - speed < bot.action.target.size + bot.size
             )
                 speed = distance - (bot.action.target.size + bot.size);
@@ -136,7 +137,7 @@ const turn = arena => {
         if (distance - stats.global.bulletSpeed < bullet.target.size) {
             arena.bullets.splice(arena.bullets.indexOf(bullet), 1);
 
-            if (bullet.power > 0) {
+            if (bullet.target.health > 0 && bullet.power > 0) {
                 bullet.target.shield -= bullet.power;
                 bullet.target.shieldCooldown = 0;
 
@@ -146,6 +147,10 @@ const turn = arena => {
                         bullet.target.health + bullet.target.shield
                     );
                     bullet.target.shield = 0;
+
+                    if (bullet.target.health === 0) {
+                        arena.bots.splice(arena.bots.indexOf(bullet.target), 1);
+                    }
                 }
             }
         } else {
@@ -154,7 +159,26 @@ const turn = arena => {
         }
     }
 
-    // TODO collision
+    for (let bot of arena.bots) {
+        bot.x = Math.min(arena.size - bot.size, Math.max(bot.size, bot.x));
+        bot.y = Math.min(arena.size - bot.size, Math.max(bot.size, bot.y));
+
+        for (let target of arena.bots) {
+            if (bot === target) continue;
+
+            const x = target.x - bot.x;
+            const y = target.y - bot.y;
+            const distance = Math.sqrt(x * x + y * y);
+            const speed = distance - target.size - bot.size;
+
+            if (speed < 0) {
+                bot.x += (x * speed) / distance;
+                bot.y += (y * speed) / distance;
+                target.x -= (x * speed) / distance;
+                target.y -= (y * speed) / distance;
+            }
+        }
+    }
 };
 
 export const simulate = function*(arena) {
